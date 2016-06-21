@@ -1,0 +1,204 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en">
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8">
+		<title>Js Task 1.1</title>
+        <script type="text/javascript" src="jquery-3.0.0.js"></script>
+
+        <script type="text/javascript">
+
+            var JsTasks = JsTasks || {};
+            JsTasks.task1 = {};
+            JsTasks.task1.UI = {};           
+
+            (function(hostingObject){
+                var normalizeCssClasses = function (cssClasses){
+                    var tagCssClasses = [];
+                    if(Array.isArray(cssClasses)){
+                        tagCssClasses = cssClasses;
+                    } else if(typeof(cssClasses) === 'string'){
+                        tagCssClasses = cssClasses.split(',');
+                    }
+
+                    for(var index = 0; index < tagCssClasses.length; index++){
+                        var currentClass = tagCssClasses[index];
+                        if(typeof(currentClass) !== 'string'){
+                            throw new Error("Css class names were expected to be strings.");
+                        } else{
+                            if(currentClass.match('/s')){
+                                throw new Error("Css class names must not contain spaces.");
+                            }
+                        }
+                    }
+
+                    return tagCssClasses;
+                };
+
+                var createUi = function (containerElement, jQuery, tagCssClasses){
+                    var $ = jQuery;
+
+                    var rootElement =
+                        $('<div/>').addClass(tagCssClasses.join(' '))
+                                   .css('position', 'relative');
+
+                    var listElement =
+                        $('<ul/>').css('listStyleType', 'none');
+
+                    var listContainerElement =
+                        $('<div/>').css({
+                                            top : '3em',
+                                            bottom : '0px',
+                                            width : '100%',
+                                            overflow : 'auto',
+                                            position : 'absolute'
+                                        });
+
+                    listContainerElement.append(listElement);
+
+                    var textBoxElement =
+                        $('<input/>').prop('type', 'text')
+                                     .css({
+                                            height : '2em',
+                                            width : '250px',
+                                            cssFloat : 'left',
+                                            marginLeft : '20px',
+                                            marginTop : '4px',
+                                            backgroundColor: 'lightyellow',
+                                            border: '1px solid black'
+                                         });                    
+
+                    var addItemToList = function(){
+                        var toDoItemText = textBoxElement.val().trim();
+
+                        if(toDoItemText.length > 0){
+                            var listItemElement =
+                                $('<li/>').val(new Date().getTime())
+                                          .css({
+                                                    height : '2em',
+                                                    clear : 'both'
+                                                });
+
+                            var listItemContainerElement =
+                                $('<div/>').css({
+                                                    width : '100%',
+                                                    height : '100%'
+                                                });                            
+
+                            var textElement = 
+                                $('<span/>').text(toDoItemText)
+                                            .css('cssFloat', 'left');                            
+
+                            var deleteButtonElement =
+                                $('<input/>').prop('type', 'button')
+                                             .val('Delete')
+                                             .css({
+                                                    height : '1,5em',
+                                                    width : '60px',
+                                                    cssFloat : 'right',
+                                                    cursor : 'pointer',
+                                                    marginRight: '4px',
+                                                    border: '1px solid black'
+                                                  })
+                                             .click(function (event) {
+                                                        listElement[0].removeChild(listItemElement[0]);
+                                                    });
+
+                            listItemContainerElement.append(textElement, deleteButtonElement);                            
+                            listItemElement.append(listItemContainerElement);
+                            listElement.append(listItemElement);
+
+                            textBoxElement.val('')
+                                          .focus();                            
+                        } else {
+                            textBoxElement.css('border', '2px solid red')
+                                          .prop('title', 'Please enter to-do item description.')
+                                          .focus();
+                        }
+                    };
+
+                    textBoxElement.keyup(
+                        function(eventArgs){
+                            var enterKey = 13;
+                            if (eventArgs.keyCode === enterKey) {
+                                addItemToList();
+                            }
+                        }).on('blur input', 
+                              function (eventArgs) {
+                                  textBoxElement.css('border', '1px solid black')
+                                                .prop('title', '');                                          
+                              });
+
+                    var buttonElement =
+                        $('<input/>').prop('type', 'button')
+                                     .val('Add Todo Item')
+                                     .css({
+                                            height: '2em',
+                                            width : '100px',
+                                            cssFloat : 'left',
+                                            cursor : 'pointer',
+                                            marginLeft : '4px',
+                                            marginTop: '4px',
+                                            border: '1px solid black'
+                                          })
+                                    .click(function(eventArgs){
+                                              addItemToList();
+                                           });
+
+                    rootElement.append(buttonElement, textBoxElement, listContainerElement);
+                    $(containerElement).append(rootElement);
+                }
+
+                hostingObject.PlainJsToDoList =
+                  function(containerElement, jQuery, cssClasses){
+                      if(null == containerElement){
+                          throw new Error('The "containerElement" parameter was expected to be initialized.');
+                      }
+
+                      if (typeof (jQuery) !== 'function') {
+                          throw new Error('The "jQuery" parameter was expected to be initialized.');
+                      }
+
+                      var tagCssClasses = normalizeCssClasses(cssClasses);
+                      createUi(containerElement, jQuery, tagCssClasses);
+                  };
+            })(JsTasks.task1.UI);
+        </script>
+		<style type="text/css"  >
+			* {
+				margin: 0px;
+				padding: 0px;
+				border-width: 0px;
+			}
+					
+			#leftContainer {
+				position: fixed;
+				width:400px;
+				height: 100%;
+			}
+			
+			#rightContainer {
+				position: fixed;
+				width: 400px;
+				height: 100%;
+				left: 500px;
+			}
+			.todoList {
+				width: 100%;
+				height: 100%;
+				background-color: lightgreen;
+				overflow: visible;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="leftContainer" ></div>
+		<div id="rightContainer" ></div>
+		
+		<script type="text/javascript">
+		  (function(document){			
+			new JsTasks.task1.UI.PlainJsToDoList($('#leftContainer'), $, ['todoList']);						
+			new JsTasks.task1.UI.PlainJsToDoList($('#rightContainer'), $, ['todoList']);
+		  })(document);
+		</script>
+	</body>
+</html>

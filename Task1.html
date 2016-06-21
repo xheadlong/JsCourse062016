@@ -1,0 +1,213 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en">
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8">
+		<title>Js Task 1.1</title>
+		<script type="text/javascript">
+		  var JsTasks = JsTasks || {};
+		  JsTasks.task1 = {}; 
+		  JsTasks.task1.UI = {};
+		  
+		  (function(hostingObject) {
+		      var normalizeCssClasses = function(cssClasses) {
+		          var tagCssClasses = [];
+		          if (Array.isArray(cssClasses)) {
+		              tagCssClasses = cssClasses;
+		          } else if (typeof(cssClasses) === 'string') {
+		              tagCssClasses = cssClasses.split(',');
+		          }
+
+		          for (var index = 0; index < tagCssClasses.length; index++) {
+		              var currentClass = tagCssClasses[index];
+		              if (typeof(currentClass) !== 'string') {
+		                  throw new Error("Css class names were expected to be strings.");
+		              } else {
+		                  if (currentClass.match('/s')) {
+		                      throw new Error("Css class names must not contain spaces.");
+		                  }
+		              }
+		          }
+
+		          return tagCssClasses;
+		      };
+			  
+			  var setCssClasses = function (targetHtmlElement, arrayOfClassNames){
+				var currentElementClassName = targetHtmlElement.className;
+				for(var index = 0; index < arrayOfClassNames.length; index++){
+					var appendedClassName = arrayOfClassNames[index];
+					
+					if(-1 === currentElementClassName.indexOf(arrayOfClassNames[appendedClassName])){
+						currentElementClassName = ' ' + appendedClassName;
+					}
+					
+					targetHtmlElement.className = appendedClassName;
+				}
+			  };
+			  
+			  var createUi = function (containerElement, elementFactory, tagCssClasses){
+			  
+				var rootElement = elementFactory('div');
+				setCssClasses(rootElement, tagCssClasses);
+				rootElement.style.position = 'relative';
+				
+				var listElement = elementFactory('ul');
+				listElement.style.listStyleType = 'none';
+				var listContainerElement = elementFactory('div');
+				
+				listContainerElement.style.top = '3em';
+				listContainerElement.style.bottom = '0px';
+				listContainerElement.style.width = '100%';
+				listContainerElement.style.overflow = 'auto';
+				listContainerElement.style.position = 'absolute';
+				
+				listContainerElement.appendChild(listElement);
+												
+				var textBoxElement = elementFactory('input');
+				textBoxElement.type =  'text';				
+				
+				textBoxElement.style.height = '2em';
+				textBoxElement.style.width = '250px';
+				textBoxElement.style.cssFloat = 'left';
+				textBoxElement.style.marginLeft = '20px';
+				textBoxElement.style.marginTop = "4px";
+				textBoxElement.style.backgroundColor = 'lightyellow';
+				textBoxElement.style.border = '1px solid black';
+				
+				var addItemToList = function(){
+					var toDoItemText = textBoxElement.value.trim();
+
+				    if (toDoItemText.length > 0) {
+				        var listItemElement = elementFactory('li');
+
+				        listItemElement.value = new Date().getTime();
+				        listItemElement.style.height = '2em';
+				        listItemElement.style.clear = "both";
+
+				        var listItemContainerElement = elementFactory('div');
+				        listItemContainerElement.style.width = '100%';
+				        listItemContainerElement.style.height = '100%';
+
+				        var textElement = elementFactory('span');
+				        textElement.innerText = toDoItemText;
+				        textElement.style.cssFloat = 'left';
+
+				        var deleteButtonElement = elementFactory('input');
+				        deleteButtonElement.type = 'button';
+				        deleteButtonElement.value = 'Delete';
+				        deleteButtonElement.style.height = '1,5em';
+				        deleteButtonElement.style.width = '60px';
+				        deleteButtonElement.style.cssFloat = 'right';
+				        deleteButtonElement.style.cursor = 'pointer';
+				        deleteButtonElement.style.marginRight = '4px';
+				        deleteButtonElement.style.border = '1px solid black';
+
+
+				        deleteButtonElement.addEventListener('click',
+				            function(eventArgs) {
+				                listElement.removeChild(listItemElement);
+				            });
+
+				        listItemContainerElement.appendChild(textElement);
+				        listItemContainerElement.appendChild(deleteButtonElement);
+				        listItemElement.appendChild(listItemContainerElement);
+				        listElement.appendChild(listItemElement);
+
+				        textBoxElement.value = '';
+				        textBoxElement.focus();
+				    } else {
+				        textBoxElement.focus(); 
+				    }
+				};
+				
+				textBoxElement.addEventListener('keyup', 
+					function(eventArgs){
+						var enterKey = 13;
+						if (eventArgs.keyCode === enterKey) {
+							addItemToList();
+						}
+					});
+				
+				var buttonElement = elementFactory('input');
+				buttonElement.type =  'button';
+				buttonElement.value = 'Add Todo Item';
+				buttonElement.style.height = '2em';
+				buttonElement.style.width = '100px';
+				buttonElement.style.cssFloat = 'left';
+				buttonElement.style.cursor = 'pointer';	
+				buttonElement.style.marginLeft = '4px';
+				buttonElement.style.marginTop = '4px';
+				buttonElement.style.border = '1px solid black';
+				
+				buttonElement.addEventListener('click', 
+					function(eventArgs){
+						addItemToList();
+					});
+				
+				rootElement.appendChild(buttonElement);
+				rootElement.appendChild(textBoxElement);				
+				rootElement.appendChild(listContainerElement);
+				containerElement.appendChild(rootElement);
+			  }
+
+			  hostingObject.PlainJsToDoList = 
+				function(containerElement, elementFactory, cssClasses){
+				  if(null == containerElement){
+					throw new Error('The "containerElement" parameter was expected to be initialized.');
+				  }
+
+				  if(typeof(elementFactory) !== 'function'){
+					throw new Error('The "elementFactory" parameter was expected to be initialized.');
+				  }
+
+				  var tagCssClasses = normalizeCssClasses(cssClasses);
+				  createUi(containerElement, elementFactory, tagCssClasses);
+				};				
+		   })(JsTasks.task1.UI);
+		</script>
+		<style type="text/css"  >
+			* {
+				margin: 0px;
+				padding: 0px;
+				border-width: 0px;
+			}
+					
+			#leftContainer {
+				position: fixed;
+				width:400px;
+				height: 100%;
+			}
+			
+			#rightContainer {
+				position: fixed;
+				width: 400px;
+				height: 100%;
+				left: 500px;
+			}
+			.todoList {
+				width: 100%;
+				height: 100%;
+				background-color: lightgreen;
+				overflow: visible;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="leftContainer" ></div>
+		<div id="rightContainer" ></div>
+		
+		<script type="text/javascript">
+		  (function(document){
+			var elementFactory = document.createElement.bind(document);
+			
+			var parentElement = document.getElementById('leftContainer');
+			new JsTasks.task1.UI.PlainJsToDoList(parentElement, elementFactory, ['todoList']);
+			
+			parentElement = document.getElementById('rightContainer');
+			new JsTasks.task1.UI.PlainJsToDoList(parentElement, elementFactory, ['todoList']);
+		  })(document);
+		</script>
+	</body>
+</html>
+
+
+
