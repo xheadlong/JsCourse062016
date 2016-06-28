@@ -1,0 +1,66 @@
+.toDoControlContainer {
+  position : relative;
+}
+
+.toDoControlContainer > .listContainer {
+  top : 3em;
+  bottom : 0px;
+  width : 100%;
+  overflow : auto;
+  position : absolute;
+  line-height: 2em;
+}
+
+.toDoControlContainer > .listContainer > ul {
+  list-style-type : none;
+}
+
+.toDoControlContainer .newItemDescriptionTextBox {
+  width : 246px;
+  height: 2em;
+  margin-left : 20px;
+  margin-right : 4px;
+  margin-top : 4px;
+  background-color: lightyellow;
+  border: 1px solid black;
+}
+
+.toDoControlContainer .newItemDescriptionTextBox.validationError {
+  border : 2px solid red;
+}
+
+.toDoControlContainer .addItemButton {
+  width : 120px;
+  height: 2em;
+  cursor : pointer;
+  margin-left : 4px;
+  margin-top: 4px;
+  border: 1px solid black;
+  padding-left : 4px;
+  padding-right: 4px;
+}
+
+.toDoControlContainer .addItemError {
+  height: 2em;
+  color: red;
+  font-size: 0.75em;
+  margin-left : 4px;
+}
+
+.toDoControlContainer > .listContainer li {
+  clear: both;
+  width : 100%;
+}
+
+.toDoControlContainer > .listContainer .listItemContainer { 
+  padding: 4px;
+}
+
+.toDoControlContainer > .listContainer .listItemContainer .listItemDeleteButton {
+  height : 1.5em;
+  width : 60px;
+  float : right;
+  cursor : pointer;
+  border: 1px solid black;
+}
+
