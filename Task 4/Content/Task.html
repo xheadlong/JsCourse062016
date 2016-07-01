@@ -1,0 +1,43 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<html lang="en">
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+        <title>Js Task 4</title>
+        
+        <link rel="stylesheet" type="text/css" href="UI/Css/JQueryToDoList.css"></link>
+        <!-- Order is important: we let the page override styles if necessary -->
+        <link rel="stylesheet" type="text/css" href="UI/Css/Page.css"></link>
+
+        <script type="text/javascript" src="UI/Scripts/todo/lib/jquery-3.0.0.js"></script>
+        <script type="text/javascript" src="UI/Scripts/todo/lib/n13.js"></script>
+        <script type="text/javascript" src="UI/Scripts/todo/lib/EventEmitter.js"></script>
+
+        <script type="text/javascript" >
+            N13.init({appRoot: ['JsTasks', 'UI/Scripts']});
+
+            var app = null;
+            $(function(){            
+                var result = 
+                    N13.create('JsTasks.todo.App', 
+                        function(appInstance){
+                            app = appInstance;
+                        });
+                if(result){
+                    app = result;
+                }            
+            });
+        </script>      
+    </head>
+	<body>
+        <div id="leftContainer" class="toDoControlContainer">
+            <div class="addTodo"></div>
+            <div class="list"></div>
+        </div>
+        <div id="rightContainer" class="toDoControlContainer">            
+            <div class="addTodo"></div>
+            <div class="list"></div>
+        </div>
+    </body>
+</html>

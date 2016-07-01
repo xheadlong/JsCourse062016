@@ -1,0 +1,65 @@
+.listContainer {
+  top : 3em;
+  bottom : 0px;
+  width : 100%;
+  overflow : auto;
+  position : absolute;
+  line-height: 2em;
+}
+
+.listContainer > ul {
+  list-style-type : none;
+}
+
+.newItemDescriptionTextBox {
+  width : 246px;
+  height: 2em;
+  margin-left : 20px;
+  margin-right : 4px;
+  margin-top : 4px;
+  background-color: lightyellow;
+  border: 1px solid black;
+}
+
+.newItemDescriptionTextBox.validationError {
+  border : 2px solid red;
+}
+
+.addItemButton {
+  width : 120px;
+  height: 2em;
+  cursor : pointer;
+  margin-left : 4px;
+  margin-top: 4px;
+  border: 1px solid black;
+  padding-left : 4px;
+  padding-right: 4px;
+}
+
+.addItemError {
+  height: 2em;
+  color: red;
+  font-size: 1em;
+  margin-left : 4px;
+}
+
+.listContainer li {
+  clear: both;
+  width : 100%;
+}
+
+.listContainer .listItemContainer { 
+  padding: 4px;
+}
+
+.listContainer .listItemContainer .listItemDeleteButton {
+  height : 1.5em;
+  width : 60px;
+  float : right;
+  cursor : pointer;
+  border: 1px solid black;
+}
+
+.listContainer > ul {
+    list-style-type: none;
+}
